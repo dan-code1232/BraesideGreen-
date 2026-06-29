@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Braeside Bowling Club</title>
+<meta name="description" content="Braeside Bowling Club. Three greens, good company, a proper bar. Come and have a roll-up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --green: #3a7d5c;
+  --green-dark: #245a3e;
+  --green-light: #eaf4ee;
+  --green-deep: #1a3f2a;
+  --terracotta: #c4654a;
+  --terracotta-light: #fce8e3;
+  --gold: #b8860b;
+  --gold-light: #d4a017;
+  --cream: #f8f5ef;
+  --warm-white: #fdfcfa;
+  --text: #2a2520;
+  --text-mid: #4d463e;
+  --text-light: #7a7168;
+  --border: #ddd6cb;
+  --border-light: #ebe6de;
+  --sky: #e8f0f6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--cream);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--green-dark);text-decoration:none}
+a:hover{color:var(--terracotta)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;font-size:inherit}
+ul,ol{list-style:none}
+input,textarea,select{font-family:inherit;font-size:1rem}
+h1,h2,h3,h4{font-family:'Lora',Georgia,serif;font-weight:700;color:var(--green-deep);line-height:1.2}
+h1{font-size:2.7rem;margin-bottom:16px}
+h2{font-size:2rem;margin-bottom:12px}
+h3{font-size:1.35rem;margin-bottom:10px}
+h4{font-size:1.15rem;margin-bottom:6px}
+p{margin-bottom:14px;color:var(--text-mid)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.section{padding:70px 0}
+.section-alt{background:var(--warm-white)}
+
+/* ── ANIMATIONS ── */
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(3deg)}75%{transform:rotate(-3deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pop-in{0%{opacity:0;transform:scale(0.8) translateY(20px)}60%{transform:scale(1.03) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes slide-up{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes bounce-in{0%{opacity:0;transform:translateY(30px) scale(0.9)}50%{transform:translateY(-8px) scale(1.02)}70%{transform:translateY(4px) scale(0.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes wave{0%{transform:rotate(0)}10%{transform:rotate(14deg)}20%{transform:rotate(-8deg)}30%{transform:rotate(14deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}60%{transform:rotate(0)}100%{transform:rotate(0)}}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+.deco-bowl{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);position:relative;vertical-align:middle}
+.deco-bowl::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.wave-hand{display:inline-block;animation:wave 2.5s infinite;transform-origin:70% 70%}
+
+/* ── LOGO ── */
+.logo-img{height:40px;width:auto;border-radius:8px;flex-shrink:0;transition:transform 0.3s}
+.nav-logo:hover .logo-img{animation:wiggle 0.5s}
+.hero-logo{width:110px;height:auto;border-radius:16px;animation:float 5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+
+/* ── NOTICE BAR ── */
+.notice-bar{background:var(--green-deep);color:#fff;text-align:center;padding:11px 28px;font-size:0.95rem;font-weight:500;position:relative;overflow:hidden}
+.notice-bar::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,0.03) 40px,rgba(255,255,255,0.03) 80px)}
+.notice-bar span{position:relative}
+.notice-bar a{color:var(--gold-light);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.notice-bar i{color:var(--gold-light);margin-right:8px;animation:wiggle 3s infinite;display:inline-block}
+
+/* ── NAV ── */
+.nav{background:var(--warm-white);border-bottom:3px solid var(--green);position:sticky;top:0;z-index:100;transition:box-shadow 0.3s}
+.nav.scrolled{box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:0 28px;max-width:1120px;margin:0 auto;height:66px}
+.nav-logo{font-family:'Lora',Georgia,serif;font-size:1.2rem;font-weight:700;color:var(--green-deep);display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--text-mid);font-size:0.9rem;font-weight:600;padding:8px 12px;border-radius:8px;transition:all 0.25s}
+.nav-links a:hover{background:var(--green-light);color:var(--green-deep);transform:translateY(-1px)}
+.nav-links a.active{background:var(--green);color:#fff;box-shadow:0 2px 8px rgba(58,125,92,0.3)}
+.ham-btn{display:none;width:46px;height:46px;border-radius:10px;font-size:1.2rem;color:var(--green-deep);align-items:center;justify-content:center;transition:all 0.2s}
+.ham-btn:hover{background:var(--green-light);transform:scale(1.05)}
+
+/* Mobile nav */
+.mobile-nav{display:none;position:fixed;inset:0;z-index:200}
+.mobile-nav.open{display:flex}
+.mobile-overlay{position:absolute;inset:0;background:rgba(26,63,42,0.7);backdrop-filter:blur(4px)}
+.mobile-menu{position:absolute;top:0;right:0;width:300px;height:100%;background:var(--warm-white);padding:24px;overflow-y:auto;box-shadow:-6px 0 30px rgba(0,0,0,0.15);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.mobile-nav.open .mobile-menu{transform:translateX(0)}
+.mobile-menu-close{float:right;width:44px;height:44px;border-radius:10px;font-size:1.2rem;color:var(--text-mid);display:flex;align-items:center;justify-content:center;margin-bottom:24px;transition:all 0.2s}
+.mobile-menu-close:hover{background:var(--terracotta-light);color:var(--terracotta);transform:rotate(90deg)}
+.mobile-menu a{display:block;padding:14px 16px;font-size:1.05rem;font-weight:600;color:var(--text);text-decoration:none;border-radius:10px;margin-bottom:4px;transition:all 0.2s}
+.mobile-menu a:hover{background:var(--green-light);transform:translateX(4px)}
+.mobile-menu a.active{background:var(--green);color:#fff}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:1.05rem;font-weight:700;padding:15px 30px;border-radius:50px;text-decoration:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);border:none;line-height:1.2;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background 0.2s;border-radius:inherit}
+.btn:hover::after{background:rgba(255,255,255,0.1)}
+.btn:active{transform:scale(0.97)!important}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(58,125,92,0.3)}
+.btn-green:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(58,125,92,0.35)}
+.btn-terra{background:var(--terracotta);color:#fff;box-shadow:0 4px 12px rgba(196,101,74,0.3)}
+.btn-terra:hover{background:#a8533c;transform:translateY(-2px);box-shadow:0 6px 20px rgba(196,101,74,0.35)}
+.btn-outline{background:transparent;color:var(--green-dark);border:2.5px solid var(--green)}
+.btn-outline:hover{background:var(--green);color:#fff;transform:translateY(-2px)}
+.btn-white{background:#fff;color:var(--green-deep);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
+.btn-sm{padding:11px 22px;font-size:0.95rem}
+.btn i{font-size:0.9em}
+
+/* ── HERO ── */
+.hero{background:var(--green-deep);padding:80px 28px 64px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:24px 24px}
+.hero-content{position:relative;z-index:2;max-width:720px;margin:0 auto}
+.hero-logo{margin:0 auto 24px;display:block}
+.hero h1{color:#fff;font-size:3rem;margin-bottom:14px;animation:slide-up 0.7s ease-out}
+.hero h1 em{font-style:normal;color:var(--gold-light);position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--gold-light);border-radius:2px;opacity:0.5}
+.hero .hero-wave{font-size:1.4rem;display:inline-block;animation:wave 2s infinite;transform-origin:70% 70%;margin-right:4px}
+.hero p{color:rgba(255,255,255,0.85);font-size:1.1rem;margin-bottom:16px;line-height:1.8;animation:slide-up 0.7s ease-out 0.1s both}
+.hero-next{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:50px;padding:10px 22px;color:#fff;font-size:0.95rem;font-weight:600;margin-bottom:28px;animation:slide-up 0.7s ease-out 0.2s both}
+.hero-next i{color:var(--gold-light);animation:nudge 2s ease-in-out infinite}
+.hero-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:slide-up 0.7s ease-out 0.3s both}
+
+/* ── QUICK LINKS ── */
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.quick-card{background:var(--warm-white);border:2px solid var(--border);border-radius:18px;padding:32px 28px;text-decoration:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;display:block;color:var(--text)}
+.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.quick-card:hover::before{transform:scaleX(1)}
+.quick-card:hover{transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,0,0,0.1);border-color:var(--green);color:var(--text)}
+.quick-card-icon{width:52px;height:52px;background:var(--green-light);color:var(--green);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px;transition:all 0.3s}
+.quick-card:hover .quick-card-icon{background:var(--green);color:#fff;transform:scale(1.1) rotate(-5deg)}
+.quick-card h3{font-size:1.2rem;margin-bottom:8px;transition:color 0.2s}
+.quick-card:hover h3{color:var(--terracotta)}
+.quick-card p{font-size:0.95rem;margin:0;color:var(--text-light)}
+.quick-card .quick-detail{margin-top:14px;padding-top:14px;border-top:1px solid var(--border-light);font-size:0.92rem;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:6px}
+.quick-card .quick-detail i{font-size:0.75rem;transition:transform 0.3s}
+.quick-card:hover .quick-detail i{transform:translateX(4px)}
+
+/* ── NEWS HEADLINES ── */
+.headlines-list{max-width:680px;margin:0 auto}
+.headline-item{display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);transition:all 0.25s}
+.headline-item:last-child{border-bottom:none}
+.headline-item:hover{transform:translateX(6px)}
+.headline-item:hover .headline-title{color:var(--terracotta)}
+.headline-date{font-size:0.85rem;color:var(--text-light);font-weight:600;white-space:nowrap;min-width:90px}
+.headline-title{font-size:1.05rem;font-weight:600;color:var(--text);transition:color 0.2s;cursor:pointer}
+.headline-tag{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:3px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.headline-tag.report{background:var(--terracotta-light);color:var(--terracotta)}
+.headline-tag.club{background:var(--green-light);color:var(--green-dark)}
+.headline-tag.event{background:var(--sky);color:#0d47a1}
+
+/* ── SECTION HEADERS ── */
+.section-head{text-align:center;margin-bottom:40px}
+.section-head h2{margin-bottom:8px}
+.section-head p{font-size:1.05rem;max-width:560px;margin-left:auto;margin-right:auto}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:var(--terracotta);margin-bottom:8px}
+.divider{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--terracotta));margin:12px auto 0;border-radius:2px}
+
+/* ── NEWSLETTER ── */
+.newsletter-box{background:var(--green-deep);border-radius:20px;padding:44px 40px;text-align:center;position:relative;overflow:hidden}
+.newsletter-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 20px,transparent 20px,transparent 40px)}
+.newsletter-box h2{color:#fff;margin-bottom:8px;position:relative;font-size:1.6rem}
+.newsletter-box p{color:rgba(255,255,255,0.7);margin-bottom:22px;font-size:1rem;position:relative}
+.newsletter-form{display:flex;gap:12px;max-width:440px;margin:0 auto;position:relative}
+.newsletter-form input{flex:1;padding:14px 20px;border-radius:50px;border:2px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:1rem;outline:none;font-weight:500;transition:all 0.25s}
+.newsletter-form input::placeholder{color:rgba(255,255,255,0.35)}
+.newsletter-form input:focus{border-color:var(--gold-light);background:rgba(255,255,255,0.12)}
+
+/* ── TABLE ── */
+.table-wrap{background:var(--warm-white);border:2px solid var(--border);border-radius:16px;overflow:hidden}
+.table-wrap table{width:100%;border-collapse:collapse}
+.table-wrap thead th{background:var(--green-deep);color:#fff;padding:14px 16px;text-align:left;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em}
+.table-wrap tbody td{padding:14px 16px;border-bottom:1px solid var(--border-light);font-size:0.98rem;color:var(--text-mid);font-weight:500;transition:background 0.2s}
+.table-wrap tbody tr:hover{background:var(--green-light)}
+.table-wrap tbody tr:last-child td{border-bottom:none}
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700}
+.tag-home{background:#e8f5e9;color:#1b5e20}
+.tag-away{background:#fff3e0;color:#e65100}
+.tag-neutral{background:var(--sky);color:#0d47a1}
+
+/* ── EVENTS ── */
+.events-list{display:flex;flex-direction:column;gap:16px;max-width:720px;margin:0 auto}
+.event-card{display:flex;gap:20px;padding:22px;background:var(--warm-white);border:2px solid var(--border);border-radius:16px;align-items:center;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.event-card:hover{transform:translateX(6px);box-shadow:0 8px 24px rgba(0,0,0,0.08);border-color:var(--green)}
+.event-date{width:72px;height:72px;background:var(--green-light);color:var(--green-deep);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;transition:all 0.3s}
+.event-card:hover .event-date{background:var(--green);color:#fff;transform:rotate(-3deg) scale(1.05)}
+.event-date .day{font-family:'Lora',Georgia,serif;font-size:1.7rem;line-height:1}
+.event-date .month{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;margin-top:2px}
+.event-info h4{margin-bottom:6px;font-size:1.1rem}
+.event-info p{font-size:0.98rem;margin:0}
+.event-time{font-size:0.88rem;color:var(--green);font-weight:700;margin-top:6px;display:inline-flex;align-items:center;gap:6px}
+
+/* ── TESTIMONIALS ── */
+.testimonial{background:var(--warm-white);border:2px solid var(--border);border-left:5px solid var(--terracotta);border-radius:0 16px 16px 0;padding:28px;margin-bottom:20px;transition:all 0.3s;position:relative}
+.testimonial::before{content:'\201C';position:absolute;top:10px;left:18px;font-family:'Lora',Georgia,serif;font-size:3.5rem;color:var(--terracotta);opacity:0.12;line-height:1}
+.testimonial:hover{transform:translateX(6px);box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.testimonial p{font-style:italic;font-size:1.05rem;line-height:1.85;margin-bottom:12px;position:relative}
+.testimonial-author{font-weight:700;color:var(--green-deep);font-size:0.95rem;font-family:'Lora',Georgia,serif}
+.testimonial-role{font-size:0.85rem;color:var(--text-light)}
+
+/* ── GALLERY ── */
+.gallery-grid{columns:3;column-gap:18px}
+.gallery-item{break-inside:avoid;margin-bottom:18px;border-radius:14px;overflow:hidden;border:3px solid var(--border);cursor:pointer;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.gallery-item:hover{border-color:var(--terracotta);transform:scale(1.03) rotate(-0.5deg);box-shadow:0 12px 32px rgba(0,0,0,0.12)}
+.gallery-item img{width:100%;display:block;transition:transform 0.5s}
+.gallery-item:hover img{transform:scale(1.08)}
+
+/* ── LIGHTBOX ── */
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(26,37,32,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:14px;transform:scale(0.9);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.lightbox.open img{transform:scale(1)}
+.lightbox-close{position:absolute;top:20px;right:20px;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.12);color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.lightbox-close:hover{background:var(--terracotta);transform:rotate(90deg) scale(1.1)}
+
+/* ── COMMITTEE ── */
+.committee-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.committee-card{text-align:center;padding:28px 18px;background:var(--warm-white);border:2px solid var(--border);border-radius:16px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.committee-card:hover{transform:translateY(-6px) rotate(-0.5deg);box-shadow:0 12px 32px rgba(0,0,0,0.1);border-color:var(--green)}
+.committee-card img{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--green-light);margin:0 auto 14px;transition:all 0.3s}
+.committee-card:hover img{border-color:var(--green);transform:scale(1.08)}
+.committee-card h4{margin-bottom:2px;font-size:1.05rem}
+.committee-role{font-size:0.78rem;color:var(--terracotta);font-weight:700;text-transform:uppercase;letter-spacing:0.08em}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:start}
+.price-card{background:var(--warm-white);border:2px solid var(--border);border-radius:20px;padding:34px 24px;text-align:center;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.price-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.price-card.popular{border-color:var(--terracotta);box-shadow:0 8px 32px rgba(196,101,74,0.2);position:relative;transform:scale(1.04)}
+.price-card.popular:hover{transform:scale(1.04) translateY(-6px)}
+.price-popular-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:#fff;font-size:0.72rem;font-weight:700;padding:5px 18px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;animation:float 3s ease-in-out infinite}
+.price-name{font-size:1.08rem;font-weight:700;margin-bottom:6px}
+.price-amount{font-family:'Lora',Georgia,serif;font-size:2.5rem;font-weight:700;color:var(--green-deep);margin-bottom:2px}
+.price-amount span{font-size:0.95rem;font-weight:400;color:var(--text-light)}
+.price-note{font-size:0.88rem;color:var(--text-light);margin-bottom:22px}
+.price-list{text-align:left;margin-bottom:26px}
+.price-list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-light);font-size:0.98rem;color:var(--text-mid);font-weight:500}
+.price-list li:last-child{border-bottom:none}
+.price-list li i{color:var(--green);font-size:0.75rem}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:2px solid var(--border)}
+.faq-question{width:100%;padding:18px 0;display:flex;justify-content:space-between;align-items:center;font-size:1.08rem;font-weight:700;color:var(--text);text-align:left;transition:color 0.2s}
+.faq-question:hover{color:var(--terracotta)}
+.faq-question i{transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);color:var(--text-light);font-size:0.82rem}
+.faq-item.open .faq-question i{transform:rotate(180deg);color:var(--terracotta)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.faq-item.open .faq-answer{max-height:400px}
+.faq-answer-inner{padding:0 0 18px;color:var(--text-mid);font-size:1.02rem;line-height:1.85}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:22px}
+.form-label{display:block;font-size:1.02rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.form-input,.form-textarea,.form-select{width:100%;padding:15px 16px;border:2.5px solid var(--border);border-radius:12px;background:#fff;color:var(--text);font-size:1.02rem;transition:all 0.25s;font-weight:500}
+.form-input:focus,.form-textarea:focus,.form-select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px var(--green-light);transform:translateY(-1px)}
+.form-textarea{resize:vertical;min-height:120px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ── CONTACT CARDS ── */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:40px}
+.contact-card{padding:22px;background:var(--warm-white);border:2px solid var(--border);border-radius:16px;display:flex;align-items:flex-start;gap:16px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.contact-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.contact-card-icon{width:50px;height:50px;background:var(--green-light);color:var(--green);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;transition:all 0.3s}
+.contact-card:hover .contact-card-icon{background:var(--green);color:#fff;transform:rotate(-5deg) scale(1.1)}
+.contact-card h4{font-size:1.02rem;margin-bottom:6px}
+.contact-card p{font-size:0.98rem;margin:0;font-weight:500}
+
+/* ── MAP ── */
+.map-wrap{border-radius:16px;overflow:hidden;border:2px solid var(--border);transition:all 0.3s}
+.map-wrap:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.map-wrap iframe{width:100%;height:360px;border:none;display:block}
+
+/* ── SPONSORS ── */
+.sponsors-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px}
+.sponsor-item{width:165px;height:82px;background:var(--warm-white);border:2px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:14px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.sponsor-item:hover{border-color:var(--green);transform:translateY(-4px) scale(1.05);box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:34px}
+.timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--green),var(--terracotta));border-radius:2px}
+.timeline-item{position:relative;margin-bottom:28px}
+.timeline-item:last-child{margin-bottom:0}
+.timeline-dot{position:absolute;left:-30px;top:5px;width:13px;height:13px;border-radius:50%;background:var(--green);border:3px solid var(--cream);transition:all 0.3s}
+.timeline-item:hover .timeline-dot{transform:scale(1.4);background:var(--terracotta)}
+.timeline-year{font-weight:700;color:var(--terracotta);font-size:0.88rem;margin-bottom:2px}
+.timeline-text{font-size:0.98rem;color:var(--text-mid);font-weight:500}
+
+/* ── HONOURS ── */
+.honours-list{columns:2;column-gap:32px}
+.honour-item{break-inside:avoid;padding:11px 0;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;gap:14px;font-size:0.98rem;font-weight:500;transition:transform 0.2s}
+.honour-item:hover{transform:translateX(4px)}
+.honour-year{color:var(--terracotta);font-weight:700;white-space:nowrap}
+
+/* ── TEAMS ── */
+.teams-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.team-card{background:var(--warm-white);border:2px solid var(--border);border-radius:16px;padding:30px;text-align:center;border-top:4px solid var(--green);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.team-card:hover{transform:translateY(-6px) rotate(-0.3deg);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.team-card .team-icon{font-size:2rem;color:var(--green);margin-bottom:12px;transition:transform 0.3s}
+.team-card:hover .team-icon{transform:scale(1.2) rotate(-10deg)}
+.team-card h4{margin-bottom:4px}
+.team-division{font-size:0.78rem;color:var(--terracotta);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
+.team-card p{font-size:0.98rem}
+
+/* ── COMP CARDS ── */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.comp-card{background:var(--warm-white);border:2px solid var(--border);border-radius:16px;padding:26px;border-bottom:4px solid var(--green);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.comp-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.comp-status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;margin-bottom:10px}
+.comp-status.open{background:#e8f5e9;color:#1b5e20}
+.comp-status.upcoming{background:var(--sky);color:#0d47a1}
+.comp-status.closed{background:#f0ede8;color:#616161}
+
+/* ── DOWNLOADS ── */
+.download-item{display:flex;align-items:center;gap:16px;padding:18px;background:var(--warm-white);border:2px solid var(--border);border-radius:14px;margin-bottom:12px;transition:all 0.3s}
+.download-item:hover{transform:translateX(6px);border-color:var(--green)}
+.download-icon{width:50px;height:50px;background:var(--green-light);color:var(--green);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;transition:all 0.3s}
+.download-item:hover .download-icon{background:var(--green);color:#fff}
+.download-item h4{font-size:1.02rem;margin-bottom:2px}
+.download-item p{font-size:0.88rem;margin:0}
+
+/* ── SAFEGUARDING ── */
+.safeguard-box{background:var(--terracotta-light);border:2px solid var(--terracotta);border-radius:16px;padding:26px;display:flex;gap:16px;align-items:flex-start;margin-top:40px}
+.safeguard-box i{color:var(--terracotta);font-size:1.3rem;margin-top:3px}
+.safeguard-box p{font-size:1.02rem;line-height:1.8;margin:0}
+.safeguard-box a{color:var(--green-dark);font-weight:700}
+
+/* ── PAGE HERO ── */
+.page-hero{background:var(--green-deep);padding:100px 28px 48px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(58,125,92,0.3),transparent 70%)}
+.page-hero h1{color:#fff;margin-bottom:10px;position:relative}
+.page-hero p{color:rgba(255,255,255,0.7);font-size:1.05rem;position:relative}
+.breadcrumb{display:flex;justify-content:center;gap:10px;margin-bottom:14px;font-size:0.92rem;font-weight:500;position:relative}
+.breadcrumb a{color:rgba(255,255,255,0.5)}
+.breadcrumb a:hover{color:var(--gold-light)}
+.breadcrumb span{color:rgba(255,255,255,0.25)}
+.breadcrumb strong{color:rgba(255,255,255,0.8)}
+
+/* ── FACILITY ROWS ── */
+.facility-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:56px}
+.facility-row:last-child{margin-bottom:0}
+.facility-row.reverse .facility-img{order:2}
+.facility-row.reverse .facility-text{order:1}
+.facility-img{border-radius:16px;overflow:hidden;border:3px solid var(--border);transition:all 0.4s}
+.facility-img:hover{transform:scale(1.02);border-color:var(--green);box-shadow:0 12px 36px rgba(0,0,0,0.12)}
+.facility-img img{width:100%;height:280px;object-fit:cover}
+.facility-text h2{text-align:left}
+.facility-list{margin-top:18px}
+.facility-list li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:0.98rem;color:var(--text-mid);font-weight:500;transition:transform 0.2s}
+.facility-list li:hover{transform:translateX(4px)}
+.facility-list li i{color:var(--green);margin-top:4px;flex-shrink:0;font-size:0.8rem;transition:transform 0.3s}
+.facility-list li:hover i{transform:scale(1.3)}
+
+/* ── NEWS CARDS (inner pages) ── */
+.news-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-bottom:32px}
+.news-card{background:var(--warm-white);border:2px solid var(--border);border-radius:16px;overflow:hidden;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.news-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,0.1);border-color:var(--green)}
+.news-card-img{width:100%;height:230px;object-fit:cover;transition:transform 0.5s}
+.news-card:hover .news-card-img{transform:scale(1.03)}
+.news-card-body{padding:22px}
+.news-date{font-size:0.85rem;color:var(--text-light);margin-bottom:8px;font-weight:500}
+.news-card-body h3{font-size:1.25rem;margin-bottom:10px}
+.news-card-body p{font-size:0.98rem;margin-bottom:0}
+.news-badge{display:inline-block;background:var(--terracotta);color:#fff;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:4px 11px;border-radius:20px;margin-bottom:10px}
+.news-side{display:flex;flex-direction:column;gap:16px}
+.news-small{display:flex;gap:14px;background:var(--warm-white);border:2px solid var(--border);border-radius:14px;overflow:hidden;padding:14px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.news-small:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px rgba(0,0,0,0.08);border-color:var(--green)}
+.news-small img{width:115px;height:95px;object-fit:cover;border-radius:10px;flex-shrink:0}
+.news-small-text h4{font-size:1.02rem;margin-bottom:4px}
+.news-small-text p{font-size:0.88rem;margin:0}
+
+/* ── FOOTER ── */
+.footer{background:var(--green-deep);color:rgba(255,255,255,0.8);padding:56px 0 0;position:relative}
+.footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 24px,transparent 24px,transparent 48px)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.footer-about p{color:rgba(255,255,255,0.6);font-size:0.98rem;margin-top:12px;line-height:1.8}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.footer-social a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);font-size:1.05rem}
+.footer-social a:hover{background:var(--terracotta);color:#fff;transform:translateY(-3px) scale(1.1)}
+.footer-col h4{color:#fff;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:18px}
+.footer-col a{display:block;color:rgba(255,255,255,0.6);font-size:0.98rem;padding:4px 0;text-decoration:none;transition:all 0.2s;font-weight:500}
+.footer-col a:hover{color:var(--gold-light);transform:translateX(4px)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding:22px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:0.88rem;color:rgba(255,255,255,0.4);font-weight:500}
+.footer-bottom a{color:rgba(255,255,255,0.5);text-decoration:none}
+.footer-bottom a:hover{color:var(--gold-light)}
+
+/* ── BACK TO TOP ── */
+.back-top{position:fixed;bottom:26px;right:26px;z-index:90;width:52px;height:52px;border-radius:50%;background:var(--terracotta);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.15rem;box-shadow:0 4px 16px rgba(196,101,74,0.35);opacity:0;transform:translateY(20px) scale(0.8);pointer-events:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.back-top.show{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.back-top:hover{background:var(--green-deep);transform:translateY(-3px) scale(1.1);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px) scale(0.9);background:var(--green-deep);color:#fff;padding:16px 30px;border-radius:50px;font-size:1.02rem;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.25);z-index:400;opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
+
+.page{display:none}
+.page.active{display:block}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s,transform 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:0.1s}
+.reveal-d2{transition-delay:0.2s}
+.reveal-d3{transition-delay:0.3s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .nav-links{display:none}.ham-btn{display:flex}
+  .quick-grid{grid-template-columns:1fr 1fr}
+  .news-grid{grid-template-columns:1fr}
+  .facility-row{grid-template-columns:1fr;gap:24px}
+  .facility-row.reverse .facility-img{order:0}.facility-row.reverse .facility-text{order:0}
+  .pricing-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto}
+  .price-card.popular{transform:scale(1)}.price-card.popular:hover{transform:translateY(-6px)}
+  .committee-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .teams-grid{grid-template-columns:repeat(2,1fr)}
+  .comp-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  html{font-size:17px}
+  .hero{padding:60px 20px 48px}
+  .hero h1{font-size:2.2rem}
+  .hero-logo{width:80px}
+  .hero-buttons{flex-direction:column;align-items:center}
+  .hero-buttons .btn{width:100%;max-width:280px}
+  .section{padding:50px 0}
+  .quick-grid{grid-template-columns:1fr}
+  .gallery-grid{columns:2}
+  .honours-list{columns:1}
+  .form-row{grid-template-columns:1fr}
+  .newsletter-form{flex-direction:column}
+  .table-wrap{overflow-x:auto}.table-wrap table{min-width:600px}
+  .event-card{flex-direction:column;text-align:center}.event-date{margin:0 auto}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .teams-grid{grid-template-columns:1fr}
+  .comp-grid{grid-template-columns:1fr}
+  .headline-item{flex-direction:column;gap:4px}
+  .headline-date{min-width:auto}
+}
+@media(max-width:480px){
+  .gallery-grid{columns:1}
+  .hero h1{font-size:1.9rem}
+  h2{font-size:1.65rem}
+}
+
+:focus-visible{outline:3px solid var(--terracotta);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+@media print{
+  .nav,.notice-bar,.back-top,.toast,.mobile-nav{display:none!important}
+  body{font-size:12pt;color:#000;background:#fff}
+  .section{padding:20px 0}a{color:#000;text-decoration:underline}
+}
+</style>
+</head>
+<body>
+
+<div class="notice-bar" role="alert">
+  <span><i class="fas fa-bullhorn"></i> New members welcome — pop down any Thursday evening for a roll-up, no obligation</span>
+</div>
+
+<nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" data-page="home" aria-label="Braeside Bowling Club - Home">
+      <img src="https://z-cdn-media.chatglm.cn/files/400611fd-5ba3-446f-a305-79601ed1bb85.png?auth_key=1882761349-8268e85ac6024c43be56d20e65b1a420-0-cbbacab3912b50c2b4370879a7e0dfb8" alt="BG Braeside Bowling Club logo" class="logo-img">
+      Braeside BC
+    </a>
+    <div class="nav-links" role="menubar">
+      <a href="#" class="active" data-page="home" role="menuitem">Home</a>
+      <a href="#" data-page="about" role="menuitem">About</a>
+      <a href="#" data-page="fixtures" role="menuitem">Fixtures</a>
+      <a href="#" data-page="results" role="menuitem">Results</a>
+      <a href="#" data-page="competitions" role="menuitem">Comps</a>
+      <a href="#" data-page="gallery" role="menuitem">Photos</a>
+      <a href="#" data-page="membership" role="menuitem">Join</a>
+      <a href="#" data-page="news" role="menuitem">News</a>
+      <a href="#" data-page="events" role="menuitem">Events</a>
+      <a href="#" data-page="sponsors" role="menuitem">Sponsors</a>
+      <a href="#" data-page="contact" role="menuitem">Contact</a>
+    </div>
+    <button class="ham-btn" id="hamBtn" aria-label="Open menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" role="dialog" aria-label="Menu">
+    <button class="mobile-menu-close" id="mobileClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    <a href="#" class="active" data-page="home">Home</a>
+    <a href="#" data-page="about">About Us</a>
+    <a href="#" data-page="fixtures">Fixtures</a>
+    <a href="#" data-page="results">Results</a>
+    <a href="#" data-page="competitions">Competitions</a>
+    <a href="#" data-page="gallery">Photos</a>
+    <a href="#" data-page="membership">Join</a>
+    <a href="#" data-page="news">News</a>
+    <a href="#" data-page="events">Events</a>
+    <a href="#" data-page="sponsors">Sponsors</a>
+    <a href="#" data-page="contact">Contact</a>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+  <button class="lightbox-close" id="lbClose" aria-label="Close"><i class="fas fa-times"></i></button>
+  <img src="" alt="" id="lbImg">
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-content">
+      <img src="https://z-cdn-media.chatglm.cn/files/400611fd-5ba3-446f-a305-79601ed1bb85.png?auth_key=1882761349-8268e85ac6024c43be56d20e65b1a420-0-cbbacab3912b50c2b4370879a7e0dfb8" alt="Braeside Bowling Club" class="hero-logo">
+      <h1><span class="hero-wave" aria-hidden="true">👋</span> Welcome to<br><em>Braeside Bowling Club</em></h1>
+      <p>Three greens, a proper bar, and always someone up for a game. You'll be made very welcome.</p>
+      <div class="hero-next">
+        <i class="fas fa-bowling-ball"></i>
+        Next match: <strong>15 Jul, 2:30 PM</strong> — A Team vs Riverside, <strong>Home</strong>
+      </div>
+      <div class="hero-buttons">
+        <a href="#" class="btn btn-terra" data-page="membership"><i class="fas fa-user-plus"></i> Join the Club</a>
+        <a href="#" class="btn btn-white" data-page="fixtures"><i class="fas fa-calendar-alt"></i> Full Fixtures</a>
+        <a href="#" class="btn btn-outline" style="border-color:rgba(255,255,255,0.35);color:#fff" data-page="contact"><i class="fas fa-envelope"></i> Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="quick-grid">
+        <a href="#" class="quick-card reveal" data-page="fixtures">
+          <div class="quick-card-icon"><i class="fas fa-calendar-alt"></i></div>
+          <h3>Fixtures & Results</h3>
+          <p>All three teams' matches, results as they come in, and cup fixtures.</p>
+          <div class="quick-detail">5 fixtures this week <i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a href="#" class="quick-card reveal reveal-d1" data-page="news">
+          <div class="quick-card-icon"><i class="fas fa-newspaper"></i></div>
+          <h3>Latest News</h3>
+          <p>Match reports, club announcements, and things worth knowing about.</p>
+          <div class="quick-detail">A Team win the League Cup! <i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a href="#" class="quick-card reveal reveal-d2" data-page="membership">
+          <div class="quick-card-icon"><i class="fas fa-star"></i></div>
+          <h3>Become a Member</h3>
+          <p>From £60/year. Three greens, clubhouse, bar, coaching — the lot.</p>
+          <div class="quick-detail">Full membership £180/year <i class="fas fa-arrow-right"></i></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-tag"><span class="deco-bowl" aria-hidden="true"></span> Latest Headlines</div>
+        <h2>What's Been Happening</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="headlines-list reveal">
+        <div class="headline-item" onclick="navigateTo('news')">
+          <span class="headline-date">12 Jul</span>
+          <span class="headline-title">A Team Win the League Cup 4-3 in a thriller at the county ground<span class="headline-tag report">Match Report</span></span>
+        </div>
+        <div class="headline-item" onclick="navigateTo('news')">
+          <span class="headline-date">8 Jul</span>
+          <span class="headline-title">Free coaching sessions now running every Saturday morning<span class="headline-tag club">Club News</span></span>
+        </div>
+        <div class="headline-item" onclick="navigateTo('news')">
+          <span class="headline-date">1 Jul</span>
+          <span class="headline-title">Green 2 renovation complete — "playing beautifully" says Dave<span class="headline-tag club">Club News</span></span>
+        </div>
+        <div class="headline-item" onclick="navigateTo('news')">
+          <span class="headline-date">25 Jun</span>
+          <span class="headline-title">Summer BBQ raises £1,200 for the local hospice<span class="headline-tag event">Event</span></span>
+        </div>
+        <div class="headline-item" onclick="navigateTo('events')">
+          <span class="headline-date">Upcoming</span>
+          <span class="headline-title">Summer Social Evening — 19th July, live music and BBQ, tickets £12<span class="headline-tag event">Event</span></span>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:28px" class="reveal">
+        <a href="#" class="btn btn-outline btn-sm" data-page="news">All News & Events <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="newsletter-box reveal">
+        <h2>Stay in the Loop</h2>
+        <p>Fixtures, events and club news straight to your inbox. No spam.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="Your email address" required aria-label="Email address for newsletter">
+          <button type="submit" class="btn btn-terra btn-sm">Sign Up <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div id="page-about" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>About Us</strong></div><h1>About Braeside Bowling Club</h1><p>A bit of history and what we're all about.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="facility-row reveal">
+      <div class="facility-img"><img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=800&h=500&fit=crop" alt="Aerial view of the club" loading="lazy"></div>
+      <div class="facility-text">
+        <h2>Started in 1965, Still Going Strong</h2>
+        <p>A group of local bowlers got together and raised the money to build the first green. Added the second one in '72 and the third in '85. The clubhouse's been done up a few times since — most recently in 2022.</p>
+        <p>We've always been a proper community club. Not fancy, not pretentious. Just people who enjoy a game of bowls and each other's company.</p>
+      </div>
+    </div>
+    <div class="section-head reveal" style="margin-top:52px"><div class="section-tag"><span class="deco-bowl" aria-hidden="true"></span> Our Story</div><h2>Key Moments</h2><div class="divider"></div></div>
+    <div class="reveal" style="max-width:640px;margin:0 auto">
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1965</div><div class="timeline-text">Club founded. First green opened with 48 founding members.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1972</div><div class="timeline-text">Second green built. Membership tops 100 for the first time.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1985</div><div class="timeline-text">Third green added. A Team wins first county cup.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1998</div><div class="timeline-text">Major clubhouse renovation. New bar and function room.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2010</div><div class="timeline-text">Floodlights installed on all three greens.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2022</div><div class="timeline-text">Clubhouse fully refurbished. Green 2 completely relaid.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2025</div><div class="timeline-text">A Team win the League Cup. Membership at 156 and growing.</div></div>
+      </div>
+    </div>
+  </div></section>
+  <section class="section section-alt"><div class="wrap">
+    <div class="section-head reveal"><div class="section-tag"><span class="deco-bowl" aria-hidden="true"></span> The Committee</div><h2>Who Runs the Show</h2><p>All volunteers, doing it because they care about the club.</p><div class="divider"></div></div>
+    <div class="committee-grid">
+      <div class="committee-card reveal"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="John Mitchell" loading="lazy"><h4>John Mitchell</h4><div class="committee-role">President</div></div>
+      <div class="committee-card reveal reveal-d1"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" alt="David Brown" loading="lazy"><h4>David Brown</h4><div class="committee-role">Chairman</div></div>
+      <div class="committee-card reveal reveal-d2"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Helen Clarke" loading="lazy"><h4>Helen Clarke</h4><div class="committee-role">Secretary</div></div>
+      <div class="committee-card reveal reveal-d3"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face" alt="Robert Taylor" loading="lazy"><h4>Robert Taylor</h4><div class="committee-role">Treasurer</div></div>
+    </div>
+  </div></section>
+  <section class="section"><div class="wrap">
+    <div class="section-head reveal"><div class="section-tag"><span class="deco-bowl" aria-hidden="true"></span> Trophy Cabinet</div><h2>Club Honours</h2><div class="divider"></div></div>
+    <div class="honours-list reveal">
+      <div class="honour-item"><span>County Cup</span><span class="honour-year">2025, 2018, 2009, 1995</span></div>
+      <div class="honour-item"><span>Division 1 Champions</span><span class="honour-year">2024, 2017, 2011, 2003</span></div>
+      <div class="honour-item"><span>Division 2 Champions</span><span class="honour-year">2022, 2015</span></div>
+      <div class="honour-item"><span>League Cup</span><span class="honour-year">2025, 2020, 2013</span></div>
+      <div class="honour-item"><span>Pairs Championship</span><span class="honour-year">2024, 2019, 2012, 2007</span></div>
+      <div class="honour-item"><span>Singles Championship</span><span class="honour-year">2023, 2016, 2008</span></div>
+      <div class="honour-item"><span>Triples Championship</span><span class="honour-year">2024, 2021, 2014</span></div>
+      <div class="honour-item"><span>Friendly League Winners</span><span class="honour-year">2023, 2020, 2017</span></div>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ FIXTURES ═══════════ -->
+<div id="page-fixtures" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Fixtures</strong></div><h1>Fixtures 2025</h1><p>All matches for our three teams plus friendlies.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="section-head reveal"><h2>A Team — Division 1</h2><div class="divider"></div></div>
+    <div class="table-wrap reveal"><table><thead><tr><th>Date</th><th>Time</th><th>Opponent</th><th>Where</th><th>Competition</th></tr></thead><tbody>
+      <tr><td style="font-weight:700">15 Jul</td><td>2:30 PM</td><td>Riverside BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">22 Jul</td><td>6:30 PM</td><td>TBC</td><td><span class="tag tag-neutral">Neutral</span></td><td>County Cup QF</td></tr>
+      <tr><td style="font-weight:700">29 Jul</td><td>6:00 PM</td><td>Oakfield BC</td><td><span class="tag tag-away">Away</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">5 Aug</td><td>2:30 PM</td><td>Westbury BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">12 Aug</td><td>6:00 PM</td><td>Northwood BC</td><td><span class="tag tag-away">Away</span></td><td>League</td></tr>
+    </tbody></table></div>
+    <div class="section-head reveal" style="margin-top:56px"><h2>B Team — Division 2</h2><div class="divider"></div></div>
+    <div class="table-wrap reveal"><table><thead><tr><th>Date</th><th>Time</th><th>Opponent</th><th>Where</th><th>Competition</th></tr></thead><tbody>
+      <tr><td style="font-weight:700">17 Jul</td><td>6:00 PM</td><td>Oakfield BC</td><td><span class="tag tag-away">Away</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">24 Jul</td><td>2:30 PM</td><td>Village Green BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">31 Jul</td><td>6:00 PM</td><td>Meadowfield BC</td><td><span class="tag tag-away">Away</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">7 Aug</td><td>2:30 PM</td><td>Riverside BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+    </tbody></table></div>
+    <div class="section-head reveal" style="margin-top:56px"><h2>C Team — Division 3</h2><div class="divider"></div></div>
+    <div class="table-wrap reveal"><table><thead><tr><th>Date</th><th>Time</th><th>Opponent</th><th>Where</th><th>Competition</th></tr></thead><tbody>
+      <tr><td style="font-weight:700">20 Jul</td><td>2:00 PM</td><td>Westbury BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">27 Jul</td><td>2:00 PM</td><td>Northwood BC</td><td><span class="tag tag-away">Away</span></td><td>League</td></tr>
+      <tr><td style="font-weight:700">3 Aug</td><td>2:00 PM</td><td>Meadowfield BC</td><td><span class="tag tag-home">Home</span></td><td>League</td></tr>
+    </tbody></table></div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ RESULTS ═══════════ -->
+<div id="page-results" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Results</strong></div><h1>Match Results</h1><p>How we've been getting on this season.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="section-head reveal"><h2>Recent Results</h2><div class="divider"></div></div>
+    <div class="table-wrap reveal"><table><thead><tr><th>Date</th><th>Team</th><th>Opponent</th><th>Score</th><th>Result</th></tr></thead><tbody>
+      <tr><td style="font-weight:700">12 Jul</td><td>A Team</td><td>Riverside BC</td><td>4-3</td><td><span class="tag tag-home">Win</span></td></tr>
+      <tr><td style="font-weight:700">10 Jul</td><td>B Team</td><td>Oakfield BC</td><td>5-2</td><td><span class="tag tag-home">Win</span></td></tr>
+      <tr><td style="font-weight:700">8 Jul</td><td>C Team</td><td>Westbury BC</td><td>3-4</td><td><span class="tag tag-away">Loss</span></td></tr>
+      <tr><td style="font-weight:700">5 Jul</td><td>A Team</td><td>Northwood BC</td><td>6-1</td><td><span class="tag tag-home">Win</span></td></tr>
+      <tr><td style="font-weight:700">3 Jul</td><td>B Team</td><td>Village Green BC</td><td>4-3</td><td><span class="tag tag-away">Win</span></td></tr>
+      <tr><td style="font-weight:700">1 Jul</td><td>C Team</td><td>Meadowfield BC</td><td>2-5</td><td><span class="tag tag-away">Loss</span></td></tr>
+    </tbody></table></div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ COMPETITIONS ═══════════ -->
+<div id="page-competitions" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Competitions</strong></div><h1>Club Competitions</h1><p>Internal competitions for all abilities.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="section-head reveal"><h2>2025 Competitions</h2><p>Enter at the bar or speak to a committee member.</p><div class="divider"></div></div>
+    <div class="comp-grid">
+      <div class="comp-card reveal"><span class="comp-status open">Open for Entry</span><h4>Singles Championship</h4><p style="margin-top:8px">Open to all members. Knockout format. Finals day 2nd August.</p></div>
+      <div class="comp-card reveal reveal-d1"><span class="comp-status open">Open for Entry</span><h4>Pairs Championship</h4><p style="margin-top:8px">Pick your partner. Entries close 25th July.</p></div>
+      <div class="comp-card reveal reveal-d2"><span class="comp-status upcoming">Starting Soon</span><h4>Triples Championship</h4><p style="margin-top:8px">Entries open 1st August. Get your team ready.</p></div>
+      <div class="comp-card reveal"><span class="comp-status open">Open for Entry</span><h4>Handicap Singles</h4><p style="margin-top:8px">Great for newer players. Handicaps level the playing field.</p></div>
+      <div class="comp-card reveal reveal-d1"><span class="comp-status closed">Closed</span><h4>President's Cup</h4><p style="margin-top:8px">Invitation event. Finals played 19th July.</p></div>
+      <div class="comp-card reveal reveal-d2"><span class="comp-status upcoming">Starting Soon</span><h4>Consolation Pairs</h4><p style="margin-top:8px">Second chance for those knocked out of the main pairs.</p></div>
+    </div>
+    <div class="section-head reveal" style="margin-top:64px"><h2>Our Teams</h2><p>Three teams competing in local leagues.</p><div class="divider"></div></div>
+    <div class="teams-grid">
+      <div class="team-card reveal"><div class="team-icon"><i class="fas fa-trophy"></i></div><h4>A Team</h4><div class="team-division">Division 1</div><p>Currently 2nd and through to the County Cup quarter-finals.</p></div>
+      <div class="team-card reveal reveal-d1"><div class="team-icon"><i class="fas fa-medal"></i></div><h4>B Team</h4><div class="team-division">Division 2</div><p>Mid-table. Good mix of experienced players and developing ones.</p></div>
+      <div class="team-card reveal reveal-d2"><div class="team-icon"><i class="fas fa-star"></i></div><h4>C Team</h4><div class="team-division">Division 3</div><p>Where most new members start. Friendly, still competitive.</p></div>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ GALLERY ═══════════ -->
+<div id="page-gallery" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Photos</strong></div><h1>Photo Gallery</h1><p>Life at Braeside, on and off the green.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="gallery-grid reveal">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=400&fit=crop" alt="Greens in summer" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=700&fit=crop" alt="Team celebration" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=600&h=500&fit=crop" alt="Beginners session" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=450&fit=crop" alt="Clubhouse interior" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=600&fit=crop" alt="Summer BBQ" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&h=400&fit=crop" alt="Green maintenance" loading="lazy"></div>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ MEMBERSHIP ═══════════ -->
+<div id="page-membership" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Join the Club</strong></div><h1>Membership</h1><p>Simple pricing, no hidden fees, excellent value.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="section-head reveal"><h2>Membership Options</h2><p>All memberships include full access to the greens, clubhouse and bar.</p><div class="divider"></div></div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-name">Social Member</div>
+        <div class="price-amount">£60<span>/year</span></div>
+        <div class="price-note">For those who want the social side</div>
+        <ul class="price-list"><li><i class="fas fa-check"></i> Full clubhouse access</li><li><i class="fas fa-check"></i> Bar and lounge use</li><li><i class="fas fa-check"></i> Social events</li><li><i class="fas fa-check"></i> Newsletter</li></ul>
+        <a href="#" class="btn btn-outline" onclick="showToast('Contact us to join as a Social Member');return false">Join Now <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="price-card popular reveal reveal-d1">
+        <div class="price-popular-tag">Most Popular</div>
+        <div class="price-name">Full Member</div>
+        <div class="price-amount">£180<span>/year</span></div>
+        <div class="price-note">Everything you need to play</div>
+        <ul class="price-list"><li><i class="fas fa-check"></i> All Social Member benefits</li><li><i class="fas fa-check"></i> Unlimited green access</li><li><i class="fas fa-check"></i> League and cup entry</li><li><i class="fas fa-check"></i> Free coaching</li><li><i class="fas fa-check"></i> Club competitions</li></ul>
+        <a href="#" class="btn btn-terra" onclick="showToast('Contact us to join as a Full Member');return false">Join Now <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="price-card reveal reveal-d2">
+        <div class="price-name">Country Member</div>
+        <div class="price-amount">£90<span>/year</span></div>
+        <div class="price-note">For members who play elsewhere</div>
+        <ul class="price-list"><li><i class="fas fa-check"></i> All Social Member benefits</li><li><i class="fas fa-check"></i> Guest green access (6 times/year)</li><li><i class="fas fa-check"></i> Club competitions</li><li><i class="fas fa-check"></i> Newsletter</li></ul>
+        <a href="#" class="btn btn-outline" onclick="showToast('Contact us to join as a Country Member');return false">Join Now <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="section-head reveal" style="margin-top:64px"><h2>Frequently Asked Questions</h2><div class="divider"></div></div>
+    <div style="max-width:680px;margin:0 auto" class="reveal">
+      <div class="faq-item open"><button class="faq-question" aria-expanded="true">Do I need to know how to play before I join?<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Not at all. Most of our current members started as complete beginners. We offer free coaching and you can play in friendly roll-ups until you feel confident enough for competitive matches.</div></div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false">Is there an age limit?<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">No. We have members from 18 to 90+. As long as you can get around the green, you can play. We can accommodate most mobility issues — just have a chat with us.</div></div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false">Can I try it out before joining?<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Absolutely. Come down any Thursday evening for a free roll-up. We'll lend you bowls and show you what to do. No obligation, no pressure.</div></div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false">What equipment do I need?<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Nothing to start with. We have club bowls you can borrow. When you're ready to buy your own, we can advise. Second-hand sets are often available from members.</div></div></div>
+      <div class="faq-item"><button class="faq-question" aria-expanded="false">When can I play?<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-answer-inner">Greens are available from around 9am to dusk (or 9pm with floodlights). Organised matches take priority but there's usually plenty of time for roll-ups. The bar is open every evening.</div></div></div>
+    </div>
+    <div class="section-head reveal" style="margin-top:64px"><h2>Membership Forms</h2><p>Download, fill in, and bring to the club or email us.</p><div class="divider"></div></div>
+    <div style="max-width:580px;margin:0 auto" class="reveal">
+      <div class="download-item"><div class="download-icon"><i class="fas fa-file-pdf"></i></div><div><h4>Membership Application Form</h4><p>PDF · 120 KB</p></div></div>
+      <div class="download-item"><div class="download-icon"><i class="fas fa-file-pdf"></i></div><div><h4>Direct Debit Mandate</h4><p>PDF · 85 KB</p></div></div>
+      <div class="download-item"><div class="download-icon"><i class="fas fa-file-pdf"></i></div><div><h4>Club Rules and Constitution</h4><p>PDF · 240 KB</p></div></div>
+    </div>
+    <div class="safeguard-box reveal">
+      <i class="fas fa-shield-alt"></i>
+      <p><strong>Safeguarding:</strong> Braeside Bowling Club is committed to creating a safe and welcoming environment for all members. Our safeguarding policy is available on request. Contact our safeguarding officer Helen Clarke or any committee member in confidence. <a href="#" data-page="contact">Contact us →</a></p>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ NEWS ═══════════ -->
+<div id="page-news" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>News</strong></div><h1>Club News</h1><p>Match reports, announcements and things worth knowing.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="news-grid" style="margin-bottom:40px">
+      <div class="news-card reveal"><img class="news-card-img" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop" alt="League Cup victory" loading="lazy"><div class="news-card-body"><span class="news-badge">Match Report</span><div class="news-date">12 July 2025</div><h3>A Team Win the League Cup 4-3</h3><p>What a final. Went right to the wire at the county ground against Riverside. The lads held their nerve and brought the cup home.</p></div></div>
+      <div class="news-side">
+        <div class="news-small reveal reveal-d1"><img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=200&h=160&fit=crop" alt="Coaching session" loading="lazy"><div class="news-small-text"><div class="news-date">8 July 2025</div><h4>Free Coaching on Saturday Mornings</h4><p>Never picked up a bowl before? Come along.</p></div></div>
+        <div class="news-small reveal reveal-d2"><img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=200&h=160&fit=crop" alt="Green renovation" loading="lazy"><div class="news-small-text"><div class="news-date">1 July 2025</div><h4>Green 2 Is Back — Looking Good</h4><p>The renovation's done and it's running lovely.</p></div></div>
+      </div>
+    </div>
+    <div class="news-card reveal" style="max-width:680px;margin:0 auto 32px"><img class="news-card-img" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&h=500&fit=crop" alt="BBQ event" loading="lazy"><div class="news-card-body"><span class="news-badge">Event</span><div class="news-date">25 June 2025</div><h3>BBQ Raised £1,200 for Charity</h3><p>Over 120 of you came along. The raffle alone made nearly £400. Thanks to everyone who helped.</p></div></div>
+    <div class="news-card reveal" style="max-width:680px;margin:0 auto"><img class="news-card-img" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&h=500&fit=crop" alt="New bar area" loading="lazy"><div class="news-card-body"><span class="news-badge">Club News</span><div class="news-date">18 June 2025</div><h3>New Beers on Tap</h3><p>We've added a couple of local ales. The Timothy Taylor's is going down well. Also now stocking gin from that new distillery down the road.</p></div></div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ EVENTS ═══════════ -->
+<div id="page-events" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Events</strong></div><h1>Events Calendar</h1><p>What's coming up at Braeside.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="events-list">
+      <div class="event-card reveal"><div class="event-date"><span class="day">19</span><span class="month">Jul</span></div><div class="event-info"><h4>Summer Social Evening</h4><p>Live music, BBQ, bar open late. Tickets £12 from the bar.</p><span class="event-time"><i class="fas fa-clock"></i> 7:00 PM – 11:00 PM</span></div></div>
+      <div class="event-card reveal reveal-d1"><div class="event-date"><span class="day">02</span><span class="month">Aug</span></div><div class="event-info"><h4>Championship Finals Day</h4><p>Singles, pairs and triples finals. BBQ and bar all day. Free entry.</p><span class="event-time"><i class="fas fa-clock"></i> 10:00 AM – 5:00 PM</span></div></div>
+      <div class="event-card reveal reveal-d2"><div class="event-date"><span class="day">16</span><span class="month">Aug</span></div><div class="event-info"><h4>Open Day — Have a Go</h4><p>Thinking about trying bowls? Come down, we'll lend you everything. Free.</p><span class="event-time"><i class="fas fa-clock"></i> 10:00 AM – 2:00 PM</span></div></div>
+      <div class="event-card reveal reveal-d3"><div class="event-date"><span class="day">30</span><span class="month">Aug</span></div><div class="event-info"><h4>Bank Holiday Fun Day</h4><p>Games, raffle, tombola, tea and cakes. Bring the grandkids.</p><span class="event-time"><i class="fas fa-clock"></i> 12:00 PM – 5:00 PM</span></div></div>
+      <div class="event-card reveal"><div class="event-date"><span class="day">13</span><span class="month">Sep</span></div><div class="event-info"><h4>Celebrity Match</h4><p>A local celebrity (TBC) takes on the A Team. Should be a good laugh. £5 entry.</p><span class="event-time"><i class="fas fa-clock"></i> 2:00 PM – 5:00 PM</span></div></div>
+      <div class="event-card reveal reveal-d1"><div class="event-date"><span class="day">27</span><span class="month">Sep</span></div><div class="event-info"><h4>Autumn Quiz Night</h4><p>Teams of up to 6. £5 per person. Prize for winners. Book your table.</p><span class="event-time"><i class="fas fa-clock"></i> 7:30 PM – 10:00 PM</span></div></div>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ SPONSORS ═══════════ -->
+<div id="page-sponsors" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Sponsors</strong></div><h1>Our Sponsors</h1><p>Grateful to these local businesses for their support.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="sponsors-grid reveal">
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+      <div class="sponsor-item"><span style="font-size:0.85rem;color:var(--text-light);font-weight:600;text-align:center">Sponsor<br>Logo</span></div>
+    </div>
+    <div style="text-align:center;margin-top:40px" class="reveal">
+      <p style="max-width:560px;margin:0 auto 22px;font-size:1.02rem">Interested in sponsoring us? Various packages available for local businesses. Great way to support the community.</p>
+      <a href="#" class="btn btn-outline" data-page="contact">Get in Touch <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div id="page-contact" class="page">
+  <div class="page-hero"><div class="wrap"><div class="breadcrumb"><a href="#" data-page="home">Home</a> <span>›</span> <strong>Contact</strong></div><h1>Get in Touch</h1><p>Pop down, give us a ring, or drop us a message.</p></div></div>
+  <section class="section"><div class="wrap">
+    <div class="contact-grid reveal">
+      <div class="contact-card"><div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4>Address</h4><p>12 Green Lane<br>Braeside<br>BS12 3XY</p></div></div>
+      <div class="contact-card"><div class="contact-card-icon"><i class="fas fa-phone"></i></div><div><h4>Phone</h4><p>01234 567 890<br><span style="font-size:0.85rem;color:var(--text-light)">Bar open evenings from 6pm</span></p></div></div>
+      <div class="contact-card"><div class="contact-card-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>info@braesidebowlingclub.co.uk<br><span style="font-size:0.85rem;color:var(--text-light)">We'll reply within 48 hours</span></p></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start" class="reveal">
+      <div>
+        <h2 style="margin-bottom:6px">Send Us a Message</h2>
+        <p style="margin-bottom:22px">Fill in the form and we'll get back to you.</p>
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label" for="cf-name">Your Name *</label><input type="text" class="form-input" id="cf-name" required placeholder="John Smith"></div>
+            <div class="form-group"><label class="form-label" for="cf-email">Email *</label><input type="email" class="form-input" id="cf-email" required placeholder="john@example.com"></div>
+          </div>
+          <div class="form-group"><label class="form-label" for="cf-phone">Phone</label><input type="tel" class="form-input" id="cf-phone" placeholder="01234 567 890"></div>
+          <div class="form-group"><label class="form-label" for="cf-subject">Subject *</label><select class="form-select" id="cf-subject" required><option value="">Please select...</option><option value="membership">Membership</option><option value="coaching">Coaching</option><option value="events">Events</option><option value="sponsorship">Sponsorship</option><option value="fixtures">Fixtures</option><option value="other">Other</option></select></div>
+          <div class="form-group"><label class="form-label" for="cf-message">Message *</label><textarea class="form-textarea" id="cf-message" required placeholder="Tell us what you'd like to know..." rows="5"></textarea></div>
+          <button type="submit" class="btn btn-green">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+      <div>
+        <h2 style="margin-bottom:6px">Find Us</h2>
+        <p style="margin-bottom:16px">On Green Lane, just past the library. Parking on site.</p>
+        <div class="map-wrap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2488.123456789012!2d-2.583333!3d51.450000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDI3JzAwLjAiTiAywrAzNScwMC4wIkU!5e0!3m2!1sen!2suk!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Braeside Bowling Club location"></iframe></div>
+        <div style="margin-top:20px;padding:20px;background:var(--green-light);border-radius:14px">
+          <h4 style="margin-bottom:6px"><i class="fas fa-clock" style="color:var(--green);margin-right:8px"></i>Opening Hours</h4>
+          <p style="margin:0;font-size:0.95rem;font-weight:500"><strong>Bar & Clubhouse:</strong><br>Mon–Fri: 6–11 PM · Sat–Sun: 12–11 PM</p>
+          <p style="margin:12px 0 0;font-size:0.95rem;font-weight:500"><strong>Greens:</strong><br>Daily: 9 AM – Dusk (or 9 PM with lights)</p>
+        </div>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="#" class="nav-logo" data-page="home" style="color:#fff"><img src="https://z-cdn-media.chatglm.cn/files/400611fd-5ba3-446f-a305-79601ed1bb85.png?auth_key=1882761349-8268e85ac6024c43be56d20e65b1a420-0-cbbacab3912b50c2b4370879a7e0dfb8" alt="BG logo" class="logo-img"> Braeside Bowling Club</a>
+        <p>Established 1965. Three greens, a proper bar, and good company.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><a href="#" data-page="home">Home</a><a href="#" data-page="about">About Us</a><a href="#" data-page="fixtures">Fixtures</a><a href="#" data-page="membership">Join</a><a href="#" data-page="contact">Contact</a></div>
+      <div class="footer-col"><h4>For Members</h4><a href="#" data-page="results">Results</a><a href="#" data-page="competitions">Competitions</a><a href="#" data-page="gallery">Photos</a><a href="#" data-page="news">News</a><a href="#" data-page="events">Events</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="tel:01234567890">01234 567 890</a><a href="mailto:info@braesidebowlingclub.co.uk">info@braesidebc.co.uk</a><a href="#" data-page="contact">Get Directions</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Braeside Bowling Club</span>
+      <span><a href="#">Privacy</a> · <a href="#">Accessibility</a> · <a href="#">Sitemap</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function navigateTo(pageId){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  var t=document.getElementById('page-'+pageId);
+  if(t)t.classList.add('active');
+  document.querySelectorAll('[data-page]').forEach(function(l){l.classList.toggle('active',l.getAttribute('data-page')===pageId)});
+  closeMobileNav();
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,120);
+  history.pushState(null,'','#'+pageId);
+}
+document.addEventListener('click',function(e){
+  var l=e.target.closest('[data-page]');
+  if(l){e.preventDefault();navigateTo(l.getAttribute('data-page'))}
+});
+window.addEventListener('popstate',function(){navigateTo(location.hash.replace('#','')||'home')});
+window.addEventListener('DOMContentLoaded',function(){navigateTo(location.hash.replace('#','')||'home')});
+
+var hamBtn=document.getElementById('hamBtn'),mobileNav=document.getElementById('mobileNav'),mobileOverlay=document.getElementById('mobileOverlay'),mobileClose=document.getElementById('mobileClose');
+function openMobileNav(){mobileNav.classList.add('open');mobileNav.setAttribute('aria-hidden','false');hamBtn.setAttribute('aria-expanded','true');document.body.style.overflow='hidden'}
+function closeMobileNav(){mobileNav.classList.remove('open');mobileNav.setAttribute('aria-hidden','true');hamBtn.setAttribute('aria-expanded','false');document.body.style.overflow=''}
+hamBtn.addEventListener('click',openMobileNav);
+mobileOverlay.addEventListener('click',closeMobileNav);
+mobileClose.addEventListener('click',closeMobileNav);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeMobileNav();closeLightbox()}});
+
+var lightbox=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbClose=document.getElementById('lbClose');
+document.querySelectorAll('.gallery-item img').forEach(function(img){
+  img.addEventListener('click',function(){lbImg.src=this.src;lbImg.alt=this.alt;lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'})
+});
+function closeLightbox(){lightbox.classList.remove('open');lightbox.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+lbClose.addEventListener('click',closeLightbox);
+lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox()});
+
+document.querySelectorAll('.faq-question').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var item=this.parentElement,isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('open');f.querySelector('.faq-question').setAttribute('aria-expanded','false')});
+    if(!isOpen){item.classList.add('open');this.setAttribute('aria-expanded','true')}
+  });
+});
+
+var mainNav=document.getElementById('mainNav');
+window.addEventListener('scroll',function(){mainNav.classList.toggle('scrolled',window.scrollY>10)},{passive:true});
+
+var backTop=document.getElementById('backTop');
+window.addEventListener('scroll',function(){backTop.classList.toggle('show',window.scrollY>500)},{passive:true});
+backTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.innerHTML='<i class="fas fa-check-circle"></i> '+msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},3500);
+}
+
+document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();showToast("Message sent! We'll be in touch soon.");this.reset()});
+document.getElementById('newsletterForm').addEventListener('submit',function(e){e.preventDefault();showToast('Thanks for signing up!');this.reset()});
+
+function initReveal(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){entry.target.classList.add('visible');obs.unobserve(entry.target)}
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.reveal:not(.visible)').forEach(function(el){obs.observe(el)});
+}
+initReveal();
+</script>
+</body>
+</html>
